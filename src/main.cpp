@@ -276,24 +276,25 @@ static std::mutex g_boundsMutex;
 
 void drawmenu() {
     static bool show_menu = false;
-    static bool motion_blur_enabled = true;
     static int current_tab = 0;
 
     ImGuiIO& io = ImGui::GetIO();
 
-    ImGui::SetNextWindowPos(ImVec2(20.0f, io.DisplaySize.y - 60.0f), ImGuiCond_Always);
+
+    ImGui::SetNextWindowPos(ImVec2(20.0f, io.DisplaySize.y - 80.0f), ImGuiCond_Always);
     ImGui::Begin("MenuTrigger", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoBackground);
     
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.1f, 0.1f, 0.1f, 0.8f));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
-    if (ImGui::Button("OPEN MENU", ImVec2(100, 40))) {
+    if (ImGui::Button("OPEN MENU", ImVec2(130, 50))) {
         show_menu = !show_menu;
     }
     ImGui::PopStyleColor(2);
     ImGui::End();
 
     if (show_menu) {
-        ImGui::SetNextWindowSize(ImVec2(550, 350), ImGuiCond_FirstUseEver);
+      
+        ImGui::SetNextWindowSize(ImVec2(700, 450), ImGuiCond_FirstUseEver);
 
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
         ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
@@ -314,38 +315,40 @@ void drawmenu() {
 
         ImGui::SetCursorPosY(3.0f);
 
+
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(0.04f, 0.04f, 0.04f, 1.0f));
-        ImGui::BeginChild("Sidebar", ImVec2(60, win_size.y - 3.0f), false);
+        ImGui::BeginChild("Sidebar", ImVec2(80, win_size.y - 3.0f), false);
 
         for (int i = 0; i < 4; ++i) {
             ImVec2 cursor_pos = ImGui::GetCursorScreenPos();
-            ImVec2 center = ImVec2(cursor_pos.x + 30.0f, cursor_pos.y + 30.0f);
+            ImVec2 center = ImVec2(cursor_pos.x + 40.0f, cursor_pos.y + 40.0f);
             
             if (current_tab == i) {
-                draw_list->AddRectFilled(cursor_pos, ImVec2(cursor_pos.x + 60.0f, cursor_pos.y + 60.0f), ImColor(0.12f, 0.12f, 0.12f, 1.0f));
+                draw_list->AddRectFilled(cursor_pos, ImVec2(cursor_pos.x + 80.0f, cursor_pos.y + 80.0f), ImColor(0.12f, 0.12f, 0.12f, 1.0f));
             }
 
-            if (ImGui::InvisibleButton((std::string("tab_") + std::to_string(i)).c_str(), ImVec2(60.0f, 60.0f))) {
+            if (ImGui::InvisibleButton((std::string("tab_") + std::to_string(i)).c_str(), ImVec2(80.0f, 80.0f))) {
                 current_tab = i;
             }
 
             ImU32 icon_color = (current_tab == i) ? ImColor(255, 255, 255) : ImColor(150, 150, 150);
             
+
             if (i == 0) {
-                draw_list->AddCircleFilled(ImVec2(center.x, center.y - 4), 6.0f, icon_color);
-                draw_list->PathArcTo(center, 12.0f, 0.0f, 3.14159f);
+                draw_list->AddCircleFilled(ImVec2(center.x, center.y - 5), 8.0f, icon_color);
+                draw_list->PathArcTo(center, 15.0f, 0.0f, 3.14159f);
                 draw_list->PathStroke(icon_color, false, 3.0f);
             } else if (i == 1) {
-                draw_list->AddRectFilled(ImVec2(center.x - 6, center.y - 6), ImVec2(center.x + 6, center.y + 6), icon_color);
-                draw_list->AddRect(ImVec2(center.x - 10, center.y - 10), ImVec2(center.x + 10, center.y + 10), icon_color, 0.0f, 0, 2.0f);
+                draw_list->AddRectFilled(ImVec2(center.x - 8, center.y - 8), ImVec2(center.x + 8, center.y + 8), icon_color);
+                draw_list->AddRect(ImVec2(center.x - 13, center.y - 13), ImVec2(center.x + 13, center.y + 13), icon_color, 0.0f, 0, 2.0f);
             } else if (i == 2) {
-                draw_list->AddLine(ImVec2(center.x - 10, center.y - 10), ImVec2(center.x + 10, center.y + 10), icon_color, 3.0f);
-                draw_list->AddLine(ImVec2(center.x + 10, center.y - 10), ImVec2(center.x - 10, center.y + 10), icon_color, 3.0f);
+                draw_list->AddLine(ImVec2(center.x - 13, center.y - 13), ImVec2(center.x + 13, center.y + 13), icon_color, 3.0f);
+                draw_list->AddLine(ImVec2(center.x + 13, center.y - 13), ImVec2(center.x - 13, center.y + 13), icon_color, 3.0f);
             } else if (i == 3) {
-                draw_list->AddLine(ImVec2(center.x - 10, center.y - 5), ImVec2(center.x + 10, center.y - 5), icon_color, 2.0f);
-                draw_list->AddCircleFilled(ImVec2(center.x - 2, center.y - 5), 3.0f, icon_color);
-                draw_list->AddLine(ImVec2(center.x - 10, center.y + 5), ImVec2(center.x + 10, center.y + 5), icon_color, 2.0f);
-                draw_list->AddCircleFilled(ImVec2(center.x + 4, center.y + 5), 3.0f, icon_color);
+                draw_list->AddLine(ImVec2(center.x - 13, center.y - 6), ImVec2(center.x + 13, center.y - 6), icon_color, 2.0f);
+                draw_list->AddCircleFilled(ImVec2(center.x - 3, center.y - 6), 4.0f, icon_color);
+                draw_list->AddLine(ImVec2(center.x - 13, center.y + 6), ImVec2(center.x + 13, center.y + 6), icon_color, 2.0f);
+                draw_list->AddCircleFilled(ImVec2(center.x + 5, center.y + 6), 4.0f, icon_color);
             }
         }
         ImGui::EndChild();
@@ -353,15 +356,29 @@ void drawmenu() {
 
         ImGui::SameLine(0, 0);
 
-        ImGui::BeginChild("Content", ImVec2(win_size.x - 60.0f, win_size.y - 3.0f), false);
-        ImGui::SetCursorPos(ImVec2(20.0f, 20.0f));
+        
+        ImGui::BeginChild("Content", ImVec2(win_size.x - 80.0f, win_size.y - 3.0f), false);
+        ImGui::SetCursorPos(ImVec2(30.0f, 30.0f));
         
         if (current_tab == 0) {
             ImGui::PushStyleColor(ImGuiCol_CheckMark, ImVec4(0.2f, 0.8f, 0.4f, 1.0f));
             ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.15f, 0.15f, 0.15f, 1.0f));
             ImGui::PushStyleColor(ImGuiCol_FrameBgHovered, ImVec4(0.2f, 0.2f, 0.2f, 1.0f));
             
+            
+            ImGui::SetWindowFontScale(1.1f);
+            
+            
             ImGui::Checkbox("MOTION BLUR ON/OFF", &motion_blur_enabled);
+            
+            ImGui::Dummy(ImVec2(0.0f, 20.0f)); // 체크박스와 슬라이더 사이 여백
+            
+            ImGui::PushItemWidth(300.0f);
+            
+            ImGui::SliderFloat("BLUR STRENGTH", &blur_strength, 0.0f, 1.0f, "%.2f");
+            ImGui::PopItemWidth();
+
+            ImGui::SetWindowFontScale(1.0f); 
             
             ImGui::PopStyleColor(3);
         } else {
@@ -374,6 +391,7 @@ void drawmenu() {
         ImGui::PopStyleVar(2);
     }
 }
+
 
 
 static void setup() {
